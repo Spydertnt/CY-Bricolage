@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #define nbr_products 10
 #define nbr_line_stock 1
 
@@ -108,6 +109,7 @@ void rechercher_produit(){
   printf("\n       3- Retour:");
   printf("\n       choix: ");
   scanf("%d" , &rech);
+  rewind(fichier);
     switch(rech){
       case 1:printf("       Entrez la ref du produit :");
       scanf("%d", &ref);
