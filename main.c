@@ -192,7 +192,7 @@ void gestion() {
           m=l;
         }
     }
-  inventaire[m]=inventaire[i];
+  inventaire[m]=inventaire[i-1];
   printf("%s a un stock de %d unites \n", minimum.nom, minimum.qte);
   i--;
   }
