@@ -173,7 +173,7 @@ void gestion() {
       count++;
       }
     if(produit.qte!=0){
-      inventaire[i].qte=produit.qte;
+      inventaire[i]=produit;
       i++;
       }
   } 
