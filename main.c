@@ -193,6 +193,31 @@ void gestion() {
   }
 }
 
+void achat() {
+    int a=-1;
+    char nom_client[50], prenom_client[50];
+    FILE* clients = NULL;
+    printf("Avez-vous déjà un compte ? Si oui taper 1 sinon 0\n");
+    do{
+      scanf("%d", &a);
+    }while(a!=1 || a!=0);
+    if(a==0){
+      clients = fopen("clients.txt", "a");
+      printf("Quel est votre nom ? : ");
+      scanf("%s", nom_client);
+      printf("Quel est votre Prénom ? : ");
+      scanf("%s", prenom_client);
+      fprintf(clients, "\n%s %s", nom_client, prenom_client);
+    }
+  else if(a==1){
+    clients = fopen("clients.txt", "r");
+    // Fonction recherche pour trouver la bonne ligne et récupérer la valeur
+    // printf les 3 derniers achats
+    
+  }
+
+}
+
 int main() {
 
   int mode;
