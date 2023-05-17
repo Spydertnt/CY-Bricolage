@@ -29,6 +29,43 @@ typedef struct{
   int stock_restant;
 }Stock;
 
+
+void supprimer_client() {
+    char prenom[50];
+    char nom[50];
+    Client client;
+    FILE* clients = NULL;
+    FILE* temp = NULL;
+    clients = fopen("clients.txt", "r");
+    temp = fopen("temp.txt", "w");
+    
+    if (clients == NULL || temp == NULL) {
+        printf("Erreur lors de l'ouverture des fichiers.\n");
+        exit(1);
+    }
+    
+    printf("Entrez le prénom du client à supprimer : \n");
+    scanf("%s", prenom);
+    printf("Entrez le nom du client à supprimer : \n");
+    scanf("%s",nom);
+    
+    while (fscanf(clients, "%s %s %s %s %s\n", client.prenom, client.nom, client.histo1, client.histo2, client.histo3) == 5) {
+        if (strcmp(prenom, client.prenom) != 0 && strcmp(nom, client.nom)!=0) {
+        	
+            		fprintf(temp, "%s %s %s %s %s\n", client.prenom, client.nom, client.histo1, client.histo2, client.histo3);
+        }
+   }
+   	
+    
+    fclose(clients);
+    fclose(temp);
+    
+    remove("clients.txt");
+    rename("temp.txt", "clients.txt");
+    
+    printf("Client supprimé !\n");
+}
+
 Produit rechercher_produit(){
   char nom[20];
   int ref;
@@ -37,7 +74,6 @@ Produit rechercher_produit(){
   int caractereActuel;
   FILE* fichier;
   fichier = fopen("produits.txt", "r");
-  caractereActuel = fgetc(fichier);
   if(fichier==NULL){
     printf("ouverture du fichier impossible \n");
     exit(1);
@@ -51,23 +87,21 @@ Produit rechercher_produit(){
     switch(rech){
       case 1:printf("       Entrez la ref du produit :");
       scanf("%d", &ref);
-        do{
-          fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
-          if(ref==produit.ref){
-            produit.found = 1;
-            break;
+          while(fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille)==5){
+            if(ref==produit.ref){
+              produit.found = 1;
+              break;
           }
-        }while(caractereActuel!=EOF);
+        }
         break;
       case 2: printf("      Entrez le nom :");
       scanf("%s", nom);
-        do{
-          fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
-          if(strcmp(produit.nom,nom)==0){
-          produit.found = 1;
-          break;
+          while(fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille)==5){
+            if(strcmp(produit.nom,nom)==0){
+              produit.found = 1;
+              break;
           }
-        }while(caractereActuel!=EOF);
+        }
         break;
       default:
         fclose(fichier);
@@ -83,6 +117,7 @@ Produit rechercher_produit(){
     return produit;
   }
   else{
+    produit.found=0;
     printf("produit inexistant\n");
     return produit2;
   }
@@ -101,6 +136,46 @@ Produit acheter_produit(){
   }
   return produit;
 }
+
+
+Produit acheter_produit_client(){
+int choix;
+int augmentation;
+Client client;
+FILE* clients = NULL;
+clients = fopen("clients.txt", "r");
+FILE* temp = NULL;
+temp = fopen("temp.txt","a+");
+Produit produit = rechercher_produit();
+Produit produit2;
+if(produit.found==1){
+  return produit;
+}
+else if(produit.found==0){
+  printf("Souhaitez-vous vous désinscrire ? (1 ou 2)\n");
+  scanf("%d", &choix);
+  if(choix==1){
+    supprimer_client();
+    printf("Nous espérons vous revoir prochainement chez Casto\n");
+    exit(2);
+  }
+  else{
+    printf("Souhaitez-vous acheter autre chose ? (1 OU 2)\n");
+    scanf("%d", &choix);
+    if(choix==1){
+      produit2 = acheter_produit_client();
+    }
+    else{
+      printf("A bientot chez Casto ! \n");
+      exit(3);
+    }
+    return produit;
+  }
+}
+return produit;
+}
+
+
 
 int calcul_stock(){
   int stock_utiliser = 0;
@@ -222,26 +297,93 @@ void gestion() {
 
 void achat() {
     int a=-1;
+    int stock_utiliser = 0;
+    Stock stock;
     char nom_client[50], prenom_client[50];
+    char phrase_fichier[200];
     FILE* clients = NULL;
+    FILE* produits = NULL;
+    clients = fopen("clients.txt", "a+");
+    produits = fopen("produits.txt", "r+");
+    Client client;
+    Produit augmentation;
+    Produit produit;
+    int panier = 0;
+    int choix, achat;
     printf("Avez-vous déjà un compte ? Si oui taper 1 sinon 0\n");
     do{
       scanf("%d", &a);
-    }while(a!=1 || a!=0);
+    }while(a!=1 && a!=0);
     if(a==0){
-      clients = fopen("clients.txt", "a");
       printf("Quel est votre nom ? : ");
       scanf("%s", nom_client);
       printf("Quel est votre Prénom ? : ");
       scanf("%s", prenom_client);
-      fprintf(clients, "\n%s %s", nom_client, prenom_client);
+      fprintf(clients, "\n%s %s ", prenom_client, nom_client);
+      fflush(clients);
+      rewind(clients);
     }
-  else if(a==1){
-    clients = fopen("clients.txt", "r");
-    // Fonction recherche pour trouver la bonne ligne et récupérer la valeur
-    // printf les 3 derniers achats
-   
-  }
+	  else if(a==1){
+	    printf("Indiquez votre prenom.\n");
+	    scanf("%s", prenom_client);
+	    printf("indiquez votre nom\n");
+	    scanf("%s", nom_client);
+	    int found = 0;
+	    while(fscanf(clients,"%s %s %s %s %s\n",client.prenom, client.nom, client.histo1, client.histo2, client.histo3)==5){
+		if(strcmp(client.prenom,prenom_client)==0){
+			if(strcmp(client.nom, nom_client)==0){
+		  		found = 1;
+		  		printf("historique des 3 derniers achats: %s %s %s\n", client.histo1, client.histo2, client.histo3);
+		  		break;
+			}
+		else if(strcmp(client.prenom, prenom_client)!=0 || strcmp(client.nom, nom_client)!=0){
+				printf("Vous n'etes pas dans la base de donnees des clients. \n");
+				fprintf(clients, "\n%s %s ", prenom_client, nom_client);
+		}
+	      	}
+	    }
+      if(!found){
+        printf("pas d'historique, ou moins de 3 achats \n");
+      }
+    }
+    int continuer;
+    do{
+      printf("Souhaitez vous acheter quelque chose ? \n");
+      printf("            1- OUI \n");
+      printf("            2- NON \n");
+      scanf("%d", &continuer);
+      if(continuer==1){
+      augmentation = acheter_produit_client();
+      printf("Combien voulez-vous en acheter ? \n");
+      scanf("%d", &achat);
+      panier += augmentation.prix * achat;
+      rewind(produits);
+      for(int i=1; i<augmentation.ref; i++){
+        fscanf(produits, "%s %d %d %d %d\n", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
+      }
+      if(augmentation.ref!=1){
+        fprintf(produits, "\n");
+      }
+      fprintf(produits, "%s %d %d %d %d\n", augmentation.nom, augmentation.ref, augmentation.qte, augmentation.prix, augmentation.taille);
+      if(a==0 || fscanf(clients, "%s %s %s %s %s", client.prenom, client.nom, client.histo1, client.histo2, client.histo3)!=5){
+        fprintf(clients, " %s", augmentation.nom);
+      }
+      if(a==1){
+          while(fscanf(clients,"%s %s %s %s %s\n",client.prenom, client.nom, client.histo1, client.histo2, client.histo3)==5){
+            if(strcmp(client.prenom,prenom_client)==0){
+              fprintf(clients, "%s %s %s %s %s\n", client.prenom, client.nom, augmentation.nom, client.histo2, client.histo3);
+            }
+          }
+      
+      }
+      }
+
+}while(continuer==1);
+
+fclose(clients);
+fclose(produits);
+
+printf("Votre panier est de %d euros, faites claquer la CB\n", panier);
 
 }
 
@@ -260,6 +402,10 @@ int main() {
   if(mode==1){
     gestion();
     }
+  else if(mode==2){
+      achat();
+  }
+  printf("A bientot chez Casto !\n");
 
 return 0;
 
