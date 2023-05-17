@@ -188,7 +188,7 @@ int calcul_stock(){
     fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
     stock_utiliser+=(produit.qte*produit.taille);
   }
-    fprintf(fichier2, "%d %d", stock_magasin, 1000-stock_utiliser);
+    fprintf(fichier2, "%d %d", stock_magasin, stock_magasin-stock_utiliser);
     fclose(fichier);
     fclose(fichier2);
     return stock_utiliser;
