@@ -343,7 +343,7 @@ void achat() {
 	      	}
 	    }
       if(!found){
-        printf("pas d'historique, ou moins de 3 achats \n");
+        printf("pas d'historique, ou moins de 3 achats.\n");
       }
     }
     int continuer;
