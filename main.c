@@ -106,8 +106,8 @@ int calcul_stock(){
   int stock_utiliser = 0;
   Produit produit={0};
   FILE* fichier = NULL;
-  fichier = fopen("produits.txt", "r");
   FILE* fichier2 = NULL;
+  fichier = fopen("produits.txt", "r");
   fichier2 = fopen("stock.txt", "r+");
   for(int i=0; i<nbr_products; i++){
     fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
