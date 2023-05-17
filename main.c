@@ -188,7 +188,7 @@ int calcul_stock(){
     fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
     stock_utiliser+=(produit.qte*produit.taille);
   }
-    fprintf(fichier2, "%d %d", stock_magasin, stock_magasin-stock_utiliser);
+    fprintf(fichier2, "%d %d", stock_magasin, 1000-stock_utiliser);
     fclose(fichier);
     fclose(fichier2);
     return stock_utiliser;
@@ -326,24 +326,17 @@ void achat() {
 	  else if(a==1){
 	    printf("Indiquez votre prenom.\n");
 	    scanf("%s", prenom_client);
-	    printf("indiquez votre nom\n");
-	    scanf("%s", nom_client);
 	    int found = 0;
 	    while(fscanf(clients,"%s %s %s %s %s\n",client.prenom, client.nom, client.histo1, client.histo2, client.histo3)==5){
 		if(strcmp(client.prenom,prenom_client)==0){
-			if(strcmp(client.nom, nom_client)==0){
 		  		found = 1;
 		  		printf("historique des 3 derniers achats: %s %s %s\n", client.histo1, client.histo2, client.histo3);
 		  		break;
 			}
-		else if(strcmp(client.prenom, prenom_client)!=0 || strcmp(client.nom, nom_client)!=0){
-				printf("Vous n'etes pas dans la base de donnees des clients. \n");
-				fprintf(clients, "\n%s %s ", prenom_client, nom_client);
-		}
-	      	}
+	      	
 	    }
-      if(!found){
-        printf("pas d'historique, ou moins de 3 achats.\n");
+      if(found!=0 && found!=1){
+        printf("pas d'historique, ou moins de 3 achats \n");
       }
     }
     int continuer;
