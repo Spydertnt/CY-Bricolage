@@ -4,16 +4,7 @@
 #include <string.h>
 #define nbr_products 10
 #define nbr_line_stock 1
-
-enum taille {petit = 1, moyen = 2, grand = 4};
-
-typedef struct{
-char nom[50];
-int ref;
-int qte;
-int prix;
-int taille;
-}Produit;
+#define stock_magasin 1000
 
 typedef struct{
   char nom[50];
@@ -24,23 +15,24 @@ typedef struct{
 }Client;
 
 typedef struct{
-char nom[50];
-int ref;
-int qte;
-int prix;
-int taille;
-int found;
-}ProduitTemp;
+  char nom[50];
+  int ref;
+  int qte;
+  int prix;
+  int taille;
+  int found;
+  int achat;
+}Produit;
 
 typedef struct{
-int stock_total;
-int stock_restant;
+  int stock_total;
+  int stock_restant;
 }Stock;
 
-ProduitTemp rechercher_produit(){
+Produit rechercher_produit(){
   char nom[20];
   int ref;
-  ProduitTemp produit={0}, produit2={0};
+  Produit produit={0}, produit2={0};
   int rech;
   int caractereActuel;
   FILE* fichier;
@@ -51,8 +43,8 @@ ProduitTemp rechercher_produit(){
     exit(1);
   }
   printf("\n       1- Recherche par ref:");
-  printf("\n       2- Recherche par nom ");
-  printf("\n       3- Retour:");
+  printf("\n       2- Recherche par nom: ");
+  printf("\n       Sinon retour: ");
   printf("\n       choix: ");
   scanf("%d" , &rech);
   rewind(fichier);
@@ -60,7 +52,7 @@ ProduitTemp rechercher_produit(){
       case 1:printf("       Entrez la ref du produit :");
       scanf("%d", &ref);
         do{
-          fscanf(fichier, "%s %d %d %d %d", &produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
+          fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
           if(ref==produit.ref){
             produit.found = 1;
             break;
@@ -68,22 +60,22 @@ ProduitTemp rechercher_produit(){
         }while(caractereActuel!=EOF);
         break;
       case 2: printf("      Entrez le nom :");
-      scanf("%s", &nom);
+      scanf("%s", nom);
         do{
-          fscanf(fichier, "%s %d %d %d %d", &produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
+          fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
           if(strcmp(produit.nom,nom)==0){
           produit.found = 1;
           break;
           }
         }while(caractereActuel!=EOF);
         break;
-      case 3: 
-        fclose(fichier); 
+      default:
+        fclose(fichier);
         return produit2;
     }
 
-  fclose(fichier); 
-  
+  fclose(fichier);
+ 
   if(produit.found==1){
     printf("\nNom\tRef\tQuantite\tPrix\tTaille");
     printf("\n-----------------------------------");
@@ -97,46 +89,60 @@ ProduitTemp rechercher_produit(){
 
 }
 
-ProduitTemp acheter_produit(){
-  int augmentation;
-  ProduitTemp produit=rechercher_produit();
+Produit acheter_produit(){
+  Produit produit=rechercher_produit();
   if(produit.found==1){
     printf("De combien souhaitez vous augmenter ? \n");
-    scanf("%d", &augmentation);
-    produit.qte+=augmentation;
+    scanf("%d", &produit.achat);
+    produit.qte+=produit.achat;
   }
   else{
-    printf("produit inexistant\n");
-  } 
+    printf("Produit inexistant ou retour\n");
+  }
   return produit;
+}
+
+int calcul_stock(){
+  int stock_utiliser = 0;
+  Produit produit={0};
+  FILE* fichier = NULL;
+  fichier = fopen("produits.txt", "r");
+  FILE* fichier2 = NULL;
+  fichier2 = fopen("stock.txt", "r+");
+  for(int i=0; i<nbr_products; i++){
+    fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
+    stock_utiliser+=(produit.qte*produit.taille);
+  }
+    fprintf(fichier2, "%d %d", stock_magasin, 1000-stock_utiliser);
+    fclose(fichier);
+    fclose(fichier2);
+    return stock_utiliser;
 }
 
 void gestion() {
   Produit produit = {0};
-  Stock stock_shop = {0};
   char nom_achat[20];
   int count=0, i=0, k=5, l=0, m=0;
-  Produit inventaire[nbr_products]={0};
-  ProduitTemp augmentation;
-  int stock_actuel;
+  Produit inventaire[nbr_products]={0}, inventaire2[nbr_products]={0};
+  Produit augmentation;
   FILE* fichier = NULL;
   fichier = fopen("produits.txt","r+");
   int choix1, choix2, choix3, choix4;
   char phrase[200];
-  printf("Voici les articles disponibles \n");
+  printf("Voici les articles disponibles\n");
   for(int line=0; line<nbr_products; line++){
     fgets(phrase, 199, fichier);
     sscanf(phrase, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
-    printf("%s\n", produit.nom);
     if(produit.qte==0){
       printf("%s est en rupture de stock \n", produit.nom);
       count++;
-      }
+    }
     if(produit.qte!=0){
+      printf("%s\n", produit.nom);
       inventaire[i]=produit;
       i++;
-      }
-  } 
+    }
+  }
   if(count==0){
     printf("Aucun produit n'est en rupture de stock \n");
     }
@@ -157,40 +163,61 @@ void gestion() {
     printf("%s a un stock de %d unites\n", minimum.nom, minimum.qte);
     i--;
   }
-  FILE* stock = NULL;
-  stock = fopen("stock.txt","r");
-  fscanf(stock, "%d %d", &stock_shop.stock_total, &stock_shop.stock_restant);
-  printf("La place restante en magasin est de %d\n", stock_shop.stock_restant);
+  printf("La place restante en magasin est de %d\n", stock_magasin-calcul_stock());
 
+  do{
   printf("souhaitez vous connaitre le stock d'un produit (oui: 1 ou non: 2) ? \n");
   scanf("%d", &choix1);
+  }while(choix1!=1 && choix1!=2);
 
   if(choix1==1){
     rechercher_produit();
   }
 
-  printf("Souhaitez vous augmenter la quantite d'un produit ? (1 ou 2) \n");
-  scanf("%d", &choix2);
+  do{
+    printf("Souhaitez-vous augmenter la quantite d'un produit ? (oui: 1 ou non: 2) \n");
+    scanf("%d", &choix2);
+  }while(choix2!=1 && choix2!=2);
 
-  if(choix2==1){
-    augmentation = acheter_produit();
-    stock_actuel = stock_shop.stock_total - stock_shop.stock_restant;
-    /*if(stock_actuel+=(augmentation*augmentation.taille)>stock_shop.stock_total){
-      printf("Le stock total n'est pas suffisant \n");
+  do{
+    int position;
+    if(choix2==1){
+      augmentation = acheter_produit();
+      if(augmentation.found==0){
+        printf("Objet non trouvé\n");
+      }
+      else if(calcul_stock()+(augmentation.achat*augmentation.taille)>stock_magasin){
+        printf("Le stock total n'est pas suffisant \n");
+      }
+      else{
+        rewind(fichier);
+        for(int i=1; i<augmentation.ref; i++){
+          fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
+        }
+        if(augmentation.ref!=1){
+          fprintf(fichier, "\n");
+        }
+        position=ftell(fichier);
+        fgets(phrase, 199, fichier);
+        for(int i=augmentation.ref; i<nbr_products; i++){
+          fscanf(fichier, "%s %d %d %d %d", inventaire2[i-augmentation.ref].nom, &inventaire2[i-augmentation.ref].ref, &inventaire2[i-augmentation.ref].qte, &inventaire2[i-augmentation.ref].prix, &inventaire2[i-augmentation.ref].taille);
+        }
+        fseek(fichier, position, 0);
+        for(int i=augmentation.ref; i<nbr_products; i++){
+          fprintf(fichier, "%s %d %d %d %d\n", inventaire2[i-augmentation.ref].nom, inventaire2[i-augmentation.ref].ref-1, inventaire2[i-augmentation.ref].qte, inventaire2[i-augmentation.ref].prix, inventaire2[i-augmentation.ref].taille);
+        }
+        fprintf(fichier, "%s %d %d %d %d", augmentation.nom, nbr_products, augmentation.qte, augmentation.prix, augmentation.taille);
+        fclose(fichier);
+        fichier = fopen("produits.txt","r+");
+        printf("Le stock restant est de %d\n", stock_magasin-calcul_stock());
+      }
+      do{
+        printf("Souhaitez-vous acheter un autre produit ? (oui: 1 ou non: 2) \n");
+        scanf("%d", &choix2);
+      }while(choix2!=1 && choix2!=2);
     }
-    else{*/
-      rewind(fichier);
-      for(int i=1; i<augmentation.ref; i++){
-        fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
-      }
-      if(augmentation.ref!=1){
-        fprintf(fichier, "\n");
-      }
-      fprintf(fichier, "%s %d %d %d %d", augmentation.nom, augmentation.ref, augmentation.qte, augmentation.prix, augmentation.taille);
-      fprintf(fichier, "\n");
-      //stock_shop.stock_restant -= augmentation; Voir pour une fonction dédié au calcul du stock
-    //}
-  }
+  }while(choix2==1);
+  fclose(fichier);
 }
 
 void achat() {
@@ -213,7 +240,7 @@ void achat() {
     clients = fopen("clients.txt", "r");
     // Fonction recherche pour trouver la bonne ligne et récupérer la valeur
     // printf les 3 derniers achats
-    
+   
   }
 
 }
@@ -221,7 +248,7 @@ void achat() {
 int main() {
 
   int mode;
-  
+ 
   printf("-------Bienvenue chez Castorama------- \n ");
   do{
     printf("A quel mode souhaitez vous acceder ? \n");
