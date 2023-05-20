@@ -1,0 +1,10 @@
+hammer 1 5 10 2
+screwdriver 2 3 8 2
+screw 3 10 1 1
+drill 4 4 50 4
+lamp 5 10 10 2
+rush 6 5 8 2
+stapler 7 5 15 2
+saw 8 5 50 4
+cleaner 9 4 150 4
+nails 10 30 1 1
