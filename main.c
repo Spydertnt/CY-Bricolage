@@ -4,35 +4,35 @@
 #include <string.h>
 #define nbr_products 10
 #define nbr_line_stock 1
-#define stock_magasin 1000
+#define shop_stock 1000
 
 typedef struct{
-  char nom[50];
-  char prenom[50];
+  char lastname[50];
+  char firstname[50];
   char histo1[50];
   char histo2[50];
   char histo3[50];
 }Client;
 
 typedef struct{
-  char nom[50];
+  char name[50];
   int ref;
-  int qte;
-  int prix;
-  int taille;
+  int qty;
+  int price;
+  int size;
   int found;
-  int achat;
-}Produit;
+  int purchase;
+}Product;
 
 typedef struct{
-  int stock_total;
-  int stock_restant;
+  int total_stock;
+  int remaining_stock;
 }Stock;
 
 
-void supprimer_client() {
-    char prenom[50];
-    char nom[50];
+void delete_client() {
+    char firstname[50];
+    char lastname[50];
     Client client;
     FILE* clients = NULL;
     FILE* temp = NULL;
@@ -40,22 +40,22 @@ void supprimer_client() {
     temp = fopen("temp.txt", "w");
     
     if (clients == NULL || temp == NULL) {
-        printf("Erreur lors de l'ouverture des fichiers.\n");
+        printf("Error while opening files.\n");
         exit(1);
     }
     
-    printf("Entrez le prénom du client à supprimer : \n");
-    scanf("%s", prenom);
-    printf("Entrez le nom du client à supprimer : \n");
-    scanf("%s",nom);
+    printf("Enter the first name of the client you would like to delete: \n");
+    scanf("%s", firstname);
+    printf("Enter the last name of the client you would like to delete : \n");
+    scanf("%s",lastname);
     
-    while (fscanf(clients, "%s %s %s %s %s\n", client.prenom, client.nom, client.histo1, client.histo2, client.histo3) == 5) {
-        if (strcmp(prenom, client.prenom) != 0 && strcmp(nom, client.nom)!=0) {
-        	
-            		fprintf(temp, "%s %s %s %s %s\n", client.prenom, client.nom, client.histo1, client.histo2, client.histo3);
+    while (fscanf(clients, "%s %s %s %s %s\n", client.firstname, client.lastname, client.histo1, client.histo2, client.histo3) == 5) {
+        if (strcmp(firstname, client.firstname) != 0 && strcmp(lastname, client.lastname)!=0) {
+        
+            fprintf(temp, "%s %s %s %s %s\n", client.firstname, client.lastname, client.histo1, client.histo2, client.histo3);
         }
    }
-   	
+    
     
     fclose(clients);
     fclose(temp);
@@ -63,320 +63,320 @@ void supprimer_client() {
     remove("clients.txt");
     rename("temp.txt", "clients.txt");
     
-    printf("Client supprimé !\n");
+    printf("Client deleted successfully !\n");
 }
 
-Produit rechercher_produit(){
-  char nom[20];
+Product research_product(){
+  char name[20];
   int ref;
-  Produit produit={0}, produit2={0};
+  Product product={0}, product2={0};
   int rech;
-  int caractereActuel;
-  FILE* fichier;
-  fichier = fopen("produits.txt", "r");
-  if(fichier==NULL){
-    printf("ouverture du fichier impossible \n");
+  int currentCaract;
+  FILE* file;
+  file = fopen("products.txt", "r");
+  if(file==NULL){
+    printf("Cannot open file \n");
     exit(1);
   }
-  printf("\n       1- Recherche par ref:");
-  printf("\n       2- Recherche par nom: ");
-  printf("\n       Sinon retour: ");
-  printf("\n       choix: ");
+  printf("\n       1- Search by ref:");
+  printf("\n       2- Search by name: ");
+  printf("\n      Return to last page: ");
+  printf("\n       choice: ");
   scanf("%d" , &rech);
-  rewind(fichier);
+  rewind(file);
     switch(rech){
-      case 1:printf("       Entrez la ref du produit :");
+      case 1:printf("       Enter product's ref:");
       scanf("%d", &ref);
-          while(fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille)==5){
-            if(ref==produit.ref){
-              produit.found = 1;
+          while(fscanf(file, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size)==5){
+            if(ref==product.ref){
+              product.found = 1;
               break;
           }
         }
         break;
-      case 2: printf("      Entrez le nom :");
-      scanf("%s", nom);
-          while(fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille)==5){
-            if(strcmp(produit.nom,nom)==0){
-              produit.found = 1;
+      case 2: printf("      Enter product's name :");
+      scanf("%s",name);
+          while(fscanf(file, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size)==5){
+            if(strcmp(product.name,name)==0){
+              product.found = 1;
               break;
           }
         }
         break;
       default:
-        fclose(fichier);
-        return produit2;
+        fclose(file);
+        return product2;
     }
 
-  fclose(fichier);
+  fclose(file);
  
-  if(produit.found==1){
-    printf("\nNom\tRef\tQuantite\tPrix\tTaille");
+  if(product.found==1){
+    printf("\nName\tRef\tQuantity\tPrice\tSize");
     printf("\n-----------------------------------");
-    printf("\n%s\t%d\t%d\t%d\t%d\n", produit.nom, produit.ref, produit.qte, produit.prix, produit.taille);
-    return produit;
+    printf("\n%s\t%d\t%d\t%d\t%d\n", product.name, product.ref, product.qty, product.price, product.size);
+    return product;
   }
   else{
-    produit.found=0;
-    printf("produit inexistant\n");
-    return produit2;
+    product.found=0;
+    printf("Product does not exist\n");
+    return product2;
   }
 
 }
 
-Produit acheter_produit(){
-  Produit produit=rechercher_produit();
-  if(produit.found==1){
-    printf("De combien souhaitez vous augmenter ? \n");
-    scanf("%d", &produit.achat);
-    produit.qte+=produit.achat;
+Product buy_product(){
+  Product product=research_product();
+  if(product.found==1){
+    printf("How much would you like to increase ? \n");
+    scanf("%d", &product.purchase);
+    product.qty+=product.purchase;
   }
   else{
-    printf("Produit inexistant ou retour\n");
+    printf("Product does not exist or return\n");
   }
-  return produit;
+  return product;
 }
 
 
-Produit acheter_produit_client(){
-int choix;
-int augmentation;
+Product buy_product_client(){
+int choice;
+int increase;
 Client client;
 FILE* clients = NULL;
 clients = fopen("clients.txt", "r");
 FILE* temp = NULL;
 temp = fopen("temp.txt","a+");
-Produit produit = rechercher_produit();
-Produit produit2;
-if(produit.found==1){
-  return produit;
+Product product = research_product();
+Product product2;
+if(product.found==1){
+  return product;
 }
-else if(produit.found==0){
-  printf("Souhaitez-vous vous désinscrire ? (1 ou 2)\n");
-  scanf("%d", &choix);
-  if(choix==1){
-    supprimer_client();
-    printf("Nous espérons vous revoir prochainement chez Casto\n");
+else if(product.found==0){
+  printf("Would you like to unsubscribe :( ? (1 or 2)\n");
+  scanf("%d", &choice);
+  if(choice==1){
+    delete_client();
+    printf("We wish to see you soon at Casto !\n");
     exit(2);
   }
   else{
-    printf("Souhaitez-vous acheter autre chose ? (1 OU 2)\n");
-    scanf("%d", &choix);
-    if(choix==1){
-      produit2 = acheter_produit_client();
+    printf("Would you like to buy something else ? (1 or 2)\n");
+    scanf("%d", &choice);
+    if(choice==1){
+      product2 = buy_product_client();
     }
     else{
-      printf("A bientot chez Casto ! \n");
+      printf("See you soon at Casto ! \n");
       exit(3);
     }
-    return produit;
+    return product;
   }
 }
-return produit;
+return product;
 }
 
 
 
-int calcul_stock(){
-  int stock_utiliser = 0;
-  Produit produit={0};
-  FILE* fichier = NULL;
-  FILE* fichier2 = NULL;
-  fichier = fopen("produits.txt", "r");
-  fichier2 = fopen("stock.txt", "r+");
+int calculate_stock(){
+  int stock_used = 0;
+  Product product={0};
+  FILE* file = NULL;
+  FILE* file2 = NULL;
+  file = fopen("produits.txt", "r");
+  file2 = fopen("stock.txt", "r+");
   for(int i=0; i<nbr_products; i++){
-    fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
-    stock_utiliser+=(produit.qte*produit.taille);
+    fscanf(file, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size);
+    stock_used+=(product.qty*product.size);
   }
-    fprintf(fichier2, "%d %d", stock_magasin, 1000-stock_utiliser);
-    fclose(fichier);
-    fclose(fichier2);
-    return stock_utiliser;
+    fprintf(file2, "%d %d", shop_stock, 1000-stock_used);
+    fclose(file);
+    fclose(file2);
+    return stock_used;
 }
 
-void gestion() {
-  Produit produit = {0};
-  char nom_achat[20];
+void management() {
+  Product product = {0};
+  char purchase_name[20];
   int count=0, i=0, k=5, l=0, m=0;
-  Produit inventaire[nbr_products]={0}, inventaire2[nbr_products]={0};
-  Produit augmentation;
-  FILE* fichier = NULL;
-  fichier = fopen("produits.txt","r+");
-  int choix1, choix2, choix3, choix4;
+  Product inventory[nbr_products]={0}, inventory2[nbr_products]={0};
+  Product increase;
+  FILE* file = NULL;
+  file = fopen("products.txt","r+");
+  int choice1, choice2, choice3, choice4;
   char phrase[200];
-  printf("Voici les articles disponibles\n");
+  printf("Here are the available products: \n");
   for(int line=0; line<nbr_products; line++){
-    fgets(phrase, 199, fichier);
-    sscanf(phrase, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
-    if(produit.qte==0){
-      printf("%s est en rupture de stock \n", produit.nom);
+    fgets(phrase, 199, file);
+    sscanf(phrase, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size);
+    if(product.qty==0){
+      printf("%s is out of stock \n", product.name);
       count++;
     }
-    if(produit.qte!=0){
-      printf("%s\n", produit.nom);
-      inventaire[i]=produit;
+    if(product.qty!=0){
+      printf("%s\n", product.name);
+      inventory[i]=product;
       i++;
     }
   }
   if(count==0){
-    printf("Aucun produit n'est en rupture de stock \n");
+    printf("No product is out of stock \n");
     }
   if(i<5){
     k=i;
     }
-  Produit minimum;
+  Product minimum;
   for(int j=0; j<k; j++){
-    minimum.qte=3000;
+    minimum.qty=3000;
     m=0;
     for(int l=0; l<i; l++){
-      if(minimum.qte>inventaire[l].qte){
-        minimum=inventaire[l];
+      if(minimum.qty>inventory[l].qty){
+        minimum=inventory[l];
         m=l;
       }
     }
-    inventaire[m]=inventaire[i-1];
-    printf("%s a un stock de %d unites\n", minimum.nom, minimum.qte);
+    inventory[m]=inventory[i-1];
+    printf("%s has a stock of %d units\n", minimum.name, minimum.qty);
     i--;
   }
-  printf("La place restante en magasin est de %d\n", stock_magasin-calcul_stock());
+  printf("The remaining space in the store is of : %d\n", shop_stock-calculate_stock());
 
   do{
-  printf("souhaitez vous connaitre le stock d'un produit (oui: 1 ou non: 2) ? \n");
-  scanf("%d", &choix1);
-  }while(choix1!=1 && choix1!=2);
+  printf("Would you like to know a product's stock ? (yes: 1 or no: 2) ? \n");
+  scanf("%d", &choice1);
+  }while(choice1!=1 && choice1!=2);
 
-  if(choix1==1){
-    rechercher_produit();
+  if(choice1==1){
+    research_product();
   }
 
   do{
-    printf("Souhaitez-vous augmenter la quantite d'un produit ? (oui: 1 ou non: 2) \n");
-    scanf("%d", &choix2);
-  }while(choix2!=1 && choix2!=2);
+    printf("Would you like to increase the quantity of a product ? (yes: 1 or no: 2) \n");
+    scanf("%d", &choice2);
+  }while(choice2!=1 && choice2!=2);
 
   do{
     int position;
-    if(choix2==1){
-      augmentation = acheter_produit();
-      if(augmentation.found==0){
-        printf("Objet non trouvé\n");
+    if(choice2==1){
+      increase = buy_product();
+      if(increase.found==0){
+        printf("Object not found\n");
       }
-      else if(calcul_stock()+(augmentation.achat*augmentation.taille)>stock_magasin){
-        printf("Le stock total n'est pas suffisant \n");
+      else if(calculate_stock()+(increase.purchase*increase.size)>shop_stock){
+        printf("The total stock is insufficient \n");
       }
       else{
-        rewind(fichier);
-        for(int i=1; i<augmentation.ref; i++){
-          fscanf(fichier, "%s %d %d %d %d", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
+        rewind(file);
+        for(int i=1; i<increase.ref; i++){
+          fscanf(file, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size);
         }
-        if(augmentation.ref!=1){
-          fprintf(fichier, "\n");
+        if(increase.ref!=1){
+          fprintf(file, "\n");
         }
-        position=ftell(fichier);
-        fgets(phrase, 199, fichier);
-        for(int i=augmentation.ref; i<nbr_products; i++){
-          fscanf(fichier, "%s %d %d %d %d", inventaire2[i-augmentation.ref].nom, &inventaire2[i-augmentation.ref].ref, &inventaire2[i-augmentation.ref].qte, &inventaire2[i-augmentation.ref].prix, &inventaire2[i-augmentation.ref].taille);
+        position=ftell(file);
+        fgets(phrase, 199, file);
+        for(int i=increase.ref; i<nbr_products; i++){
+          fscanf(file, "%s %d %d %d %d", inventory2[i-increase.ref].name, &inventory2[i-increase.ref].ref, &inventory2[i-increase.ref].qty, &inventory[i-increase.ref].price, &inventory2[i-increase.ref].size);
         }
-        fseek(fichier, position, 0);
-        for(int i=augmentation.ref; i<nbr_products; i++){
-          fprintf(fichier, "%s %d %d %d %d\n", inventaire2[i-augmentation.ref].nom, inventaire2[i-augmentation.ref].ref-1, inventaire2[i-augmentation.ref].qte, inventaire2[i-augmentation.ref].prix, inventaire2[i-augmentation.ref].taille);
+        fseek(file, position, 0);
+        for(int i=increase.ref; i<nbr_products; i++){
+          fprintf(file, "%s %d %d %d %d\n", inventory[i-increase.ref].name, inventory[i-increase.ref].ref-1, inventory[i-increase.ref].qty, inventory[i-increase.ref].price, inventory[i-increase.ref].size);
         }
-        fprintf(fichier, "%s %d %d %d %d", augmentation.nom, nbr_products, augmentation.qte, augmentation.prix, augmentation.taille);
-        fclose(fichier);
-        fichier = fopen("produits.txt","r+");
-        printf("Le stock restant est de %d\n", stock_magasin-calcul_stock());
+        fprintf(file, "%s %d %d %d %d", increase.name, nbr_products, increase.qty, increase.price, increase.size);
+        fclose(file);
+        file = fopen("produits.txt","r+");
+        printf("The remaining stock is : %d\n", shop_stock-calculate_stock());
       }
       do{
-        printf("Souhaitez-vous acheter un autre produit ? (oui: 1 ou non: 2) \n");
-        scanf("%d", &choix2);
-      }while(choix2!=1 && choix2!=2);
+        printf("Would you like to add another product ? (yes: 1 or no: 2) \n");
+        scanf("%d", &choice2);
+      }while(choice2!=1 && choice2!=2);
     }
-  }while(choix2==1);
-  fclose(fichier);
+  }while(choice2==1);
+  fclose(file);
 }
 
-void achat() {
+void purchase() {
     int a=-1;
-    int stock_utiliser = 0;
+    int used_stock = 0;
     Stock stock;
-    char nom_client[50], prenom_client[50];
-    char phrase_fichier[200];
+    char client_lastname[50], client_firstname[50];
+    char file_phrase[200];
     FILE* clients = NULL;
-    FILE* produits = NULL;
+    FILE* products = NULL;
     clients = fopen("clients.txt", "a+");
-    produits = fopen("produits.txt", "r+");
+    products = fopen("products.txt", "r+");
     Client client;
-    Produit augmentation;
-    Produit produit;
-    int panier = 0;
-    int choix, achat;
-    printf("Avez-vous déjà un compte ? Si oui taper 1 sinon 0\n");
+    Product increase;
+    Product product;
+    int cart = 0;
+    int choice, purchase;
+    printf("Do you already have an account? If so click 1 otherwise click 0\n");
     do{
       scanf("%d", &a);
     }while(a!=1 && a!=0);
     if(a==0){
-      printf("Quel est votre nom ? : ");
-      scanf("%s", nom_client);
-      printf("Quel est votre Prénom ? : ");
-      scanf("%s", prenom_client);
-      fprintf(clients, "\n%s %s ", prenom_client, nom_client);
+      printf("What's your last name ? : ");
+      scanf("%s", client_lastname);
+      printf("What's your first name ? : ");
+      scanf("%s", client_firstname);
+      fprintf(clients, "\n%s %s ", client_firstname, client_lastname);
       fflush(clients);
       rewind(clients);
     }
-	  else if(a==1){
-	    printf("Indiquez votre prenom.\n");
-	    scanf("%s", prenom_client);
-	    int found = 0;
-	    while(fscanf(clients,"%s %s %s %s %s\n",client.prenom, client.nom, client.histo1, client.histo2, client.histo3)==5){
-		if(strcmp(client.prenom,prenom_client)==0){
-		  		found = 1;
-		  		printf("historique des 3 derniers achats: %s %s %s\n", client.histo1, client.histo2, client.histo3);
-		  		break;
-			}
-	      	
-	    }
+ else if(a==1){
+   printf("Please indicate your first name.\n");
+   scanf("%s", client_firstname);
+   int found = 0;
+   while(fscanf(clients,"%s %s %s %s %s\n",client.firstname, client.lastname, client.histo1, client.histo2, client.histo3)==5){
+if(strcmp(client.firstname,client_firstname)==0){
+  found = 1;
+  printf("History of the last 3 purchases: %s %s %s\n", client.histo1, client.histo2, client.histo3);
+  break;
+}
+      
+   }
       if(found!=0 && found!=1){
-        printf("pas d'historique, ou moins de 3 achats \n");
+        printf("No history, or minus 3 purchases \n");
       }
     }
-    int continuer;
+    int pursue;
     do{
-      printf("Souhaitez vous acheter quelque chose ? \n");
-      printf("            1- OUI \n");
-      printf("            2- NON \n");
-      scanf("%d", &continuer);
-      if(continuer==1){
-      augmentation = acheter_produit_client();
-      printf("Combien voulez-vous en acheter ? \n");
-      scanf("%d", &achat);
-      panier += augmentation.prix * achat;
-      rewind(produits);
-      for(int i=1; i<augmentation.ref; i++){
-        fscanf(produits, "%s %d %d %d %d\n", produit.nom, &produit.ref, &produit.qte, &produit.prix, &produit.taille);
+      printf("Would you like to buy something else ? \n");
+      printf("            1- YES \n");
+      printf("            2- NO \n");
+      scanf("%d", &pursue);
+      if(pursue==1){
+      increase = buy_product_client();
+      printf("How many would you like to buy ? \n");
+      scanf("%d", &purchase);
+      cart += increase.price * purchase;
+      rewind(products);
+      for(int i=1; i<increase.ref; i++){
+        fscanf(products, "%s %d %d %d %d\n", product.name, &product.ref, &product.qty, &product.price, &product.size);
       }
-      if(augmentation.ref!=1){
-        fprintf(produits, "\n");
+      if(increase.ref!=1){
+        fprintf(products, "\n");
       }
-      fprintf(produits, "%s %d %d %d %d\n", augmentation.nom, augmentation.ref, augmentation.qte, augmentation.prix, augmentation.taille);
-      if(a==0 || fscanf(clients, "%s %s %s %s %s", client.prenom, client.nom, client.histo1, client.histo2, client.histo3)!=5){
-        fprintf(clients, " %s", augmentation.nom);
+      fprintf(products, "%s %d %d %d %d\n", increase.name, increase.ref, increase.qty, increase.price, increase.size);
+      if(a==0 || fscanf(clients, "%s %s %s %s %s", client.firstname, client.lastname, client.histo1, client.histo2, client.histo3)!=5){
+        fprintf(clients, " %s", increase.name);
       }
       if(a==1){
-          while(fscanf(clients,"%s %s %s %s %s\n",client.prenom, client.nom, client.histo1, client.histo2, client.histo3)==5){
-            if(strcmp(client.prenom,prenom_client)==0){
-              fprintf(clients, "%s %s %s %s %s\n", client.prenom, client.nom, augmentation.nom, client.histo2, client.histo3);
+          while(fscanf(clients,"%s %s %s %s %s\n",client.firstname, client.lastname, client.histo1, client.histo2, client.histo3)==5){
+            if(strcmp(client.firstname,client_firstname)==0){
+              fprintf(clients, "%s %s %s %s %s\n", client.firstname, client.lastname, increase.name, client.histo2, client.histo3);
             }
           }
       
       }
       }
 
-}while(continuer==1);
+}while(pursue==1);
 
 fclose(clients);
-fclose(produits);
+fclose(products);
 
-printf("Votre panier est de %d euros, faites claquer la CB\n", panier);
+printf("Your cart has a total of %d dollars, make that credit card snap!!", cart);
 
 }
 
@@ -384,21 +384,21 @@ int main() {
 
   int mode;
  
-  printf("-------Bienvenue chez Castorama------- \n ");
+  printf("-------Welcome to Castorama------- \n ");
   do{
-    printf("A quel mode souhaitez vous acceder ? \n");
-    printf("\n  1- Mode gestion");
-    printf("\n  2- Mode achat \n");
+    printf("Which mode would you like to access ? \n");
+    printf("\n  1- Management mode");
+    printf("\n  2- Purchase mode \n");
     scanf("%d", &mode);
   }while(mode!=1 && mode!=2);
 
   if(mode==1){
-    gestion();
+    management();
     }
   else if(mode==2){
-      achat();
+      purchase();
   }
-  printf("A bientot chez Casto !\n");
+  printf("See you soon at Casto !\n");
 
 return 0;
 
