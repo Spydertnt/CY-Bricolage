@@ -50,6 +50,10 @@ Product buy_product_client(){
     if(product.found==1){
         printf("How many items would you like to buy ? \n");
         scanf("%d", &product.purchase);
+        while(product.purchase>product.qty){
+        	printf("The quantity in stock for this product is too low. Please choose another quantity.\n");
+        	scanf("%d", &product.purchase);
+        }
         product.qty-=product.purchase;
         return product;
     }
@@ -65,7 +69,7 @@ Product buy_product_client(){
         printf("Would you like to buy something else ? (1 or 2)\n");
         scanf("%d", &choice);
         if(choice==1){
-        product2 = buy_product_client();
+        Product product2 = buy_product_client();
       }
       else{
         printf("See you soon at Casto ! \n");
