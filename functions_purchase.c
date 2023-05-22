@@ -48,7 +48,7 @@ Product buy_product_client(){
     Product product = research_product();
 
     if(product.found==1){
-        printf("How much would you like to increase ? \n");
+        printf("How many items would you like to buy ? \n");
         scanf("%d", &product.purchase);
         product.qty-=product.purchase;
         return product;
