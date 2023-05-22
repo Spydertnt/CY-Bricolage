@@ -15,7 +15,7 @@ void purchase() {
     vide_buffer();
     }while(a!=1 && a!=0 || verif!=1);
     do{
-    printf("What's your ID or invent one if you don't have an account : ");
+    printf("Type your ID or create one if you don't have an account : ");
     verif = scanf("%s", id);
     vide_buffer();
     }while(verif!=1);
