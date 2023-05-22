@@ -1,6 +1,6 @@
 #include "main.h"
 
-Product buy_product(){
+Product increase_product(){
   Product product=research_product();
   if(product.found==1){
     printf("How much would you like to increase ? \n");
