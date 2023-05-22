@@ -30,10 +30,6 @@ typedef struct{
   int remaining_stock;
 }Stock;
 
-typedef struct{
-  char id[50];
-}List;
-
 void vide_buffer();
 void delete_client();
 Product research_product();
