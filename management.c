@@ -1,9 +1,10 @@
+
 #include "main.h"
 
 void management() {
   Product product = {0};
   char purchase_name[20];
-  int count=0, i=0, k=5, l=0, m=0;
+  int count=0, i=0, k=5, l=0, m=0, verif;
   Product inventory[nbr_products]={0}, inventory2[nbr_products]={0};
   Product increase;
   FILE* file = NULL;
@@ -48,15 +49,17 @@ void management() {
   printf("The remaining stock in the shop is %d\n", shop_stock-calculate_stock());
   do{
   printf("Would you like to know a product's stock ? (yes: 1 or no: 2) ? \n");
-  scanf("%d", &choice1);
-  }while(choice1!=1 && choice1!=2);
+  verif = scanf("%d", &choice1);
+  vide_buffer();
+  }while(choice1!=1 && choice1!=2 || verif!=1);
   if(choice1==1){
     research_product();
   }
   do{
     printf("Would you like to increase the quantity of a product ? (yes: 1 or no: 2) \n");
-    scanf("%d", &choice2);
-  }while(choice2!=1 && choice2!=2);
+    verif = scanf("%d", &choice2);
+    vide_buffer();
+  }while(choice2!=1 && choice2!=2 || verif!=1);
   
   do{
     if(choice2==1){
@@ -73,8 +76,9 @@ void management() {
       
       do{
         printf("Would you like to add another product ? (yes: 1 or no: 2) \n");
-        scanf("%d", &choice2);
-      }while(choice2!=1 && choice2!=2);
+        verif = scanf("%d", &choice2);
+        vide_buffer();
+      }while(choice2!=1 && choice2!=2 || verif!=1);
       
     }
   }while(choice2==1);
