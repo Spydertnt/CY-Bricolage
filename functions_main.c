@@ -1,8 +1,13 @@
 #include "main.h"
 
+void vide_buffer(){
+	while(getchar()!='\n'){
+	}
+}
+
 Product research_product(){
   char name[20];
-  int ref;
+  int ref, verif;
   Product product={0}, product2={0};
   int rech;
   int currentCaract;
@@ -12,15 +17,21 @@ Product research_product(){
     printf("Cannot open file \n");
     exit(1);
   }
+  do{
   printf("\n       1- Search by ref:");
   printf("\n       2- Search by name: ");
   printf("\n       Return to last page: ");
   printf("\n       choice: ");
-  scanf("%d" , &rech);
+  verif  = scanf("%d" , &rech);
+  vide_buffer();
+  }while(verif!=1 || rech!=1 && rech!=2);
   rewind(file);
     switch(rech){
-      case 1:printf("       Enter product's ref:");
-      scanf("%d", &ref);
+      case 1:do{
+      printf("       Enter product's ref:");
+      verif = scanf("%d", &ref);
+      vide_buffer();
+      }while(verif!=1);
           while(fscanf(file, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size)==5){
             if(ref==product.ref){
               product.found = 1;
@@ -28,8 +39,11 @@ Product research_product(){
           }
         }
         break;
-      case 2: printf("      Enter product's name :");
-      scanf("%s",name);
+      case 2: do{
+      printf("      Enter product's name :");
+      verif = scanf("%s",name);
+      vide_buffer();
+      }while(verif!=1);
           while(fscanf(file, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size)==5){
             if(strcmp(product.name,name)==0){
               product.found = 1;
