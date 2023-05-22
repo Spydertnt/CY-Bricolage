@@ -36,7 +36,7 @@ typedef struct{
 
 void delete_client();
 Product research_product();
-Product buy_product();
+Product increase_product();
 Product buy_product_client();
 int calculate_stock();
 void rewrite(Product increase);
