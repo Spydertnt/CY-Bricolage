@@ -1,53 +1,6 @@
 #include "main.h"
 
-
-
-void delete_client() {
-    int position = 0, found = 0, i = 0, verif;
-    char check[50]={0}, id[50]={0}, path[50]={0};
-    List inventory[50]={0};
-    Client client;
-    FILE* clients = NULL;
-    clients = fopen("clients.txt", "r");
-
-    if (clients == NULL) {
-        printf("Error while opening files.\n");
-        exit(1);
-    }
-    do{
-    printf("Enter the id of the client you would like to delete: \n");
-    verif = scanf("%s", id);
-    vide_buffer();
-    }while(verif!=1);
-
-    while(fscanf(clients, "%s", check)==1){
-      if(strcmp(check,id)==0){
-        found=1;
-        break;
-      }
-      position = ftell(clients);
-    }
-
-    if(found==0){
-      printf("Invalid id, no client found\n");
-    }
-    else{
-      while(fscanf(clients, "%s", inventory[i])!=EOF){
-        i++;
-      }
-      fseek(clients, position, 0);
-      for(int j=0; j<i; j++){
-        fprintf(clients, "%s", inventory[j]);
-      }
-    }
-
-    fclose(clients);
-    sprintf(path, "%s.txt", id);  
-    remove(path);
-    printf("Client deleted successfully !\n");
-}
-
-Product buy_product_client(){
+Product buy_product_client(char path[]){
     int choice;
     int verif;
     Product product = research_product();
@@ -75,7 +28,8 @@ Product buy_product_client(){
         vide_buffer();
         }while(choice!=2 && choice!=1 || verif!=1);
         if(choice==1){
-        delete_client();
+        remove(path);
+        printf("Client deleted successfully !\n");
         printf("We wish to see you soon at Casto !\n");
         exit(2);
       }
@@ -86,7 +40,7 @@ Product buy_product_client(){
         vide_buffer();
         }while(choice!=1 && choice!=2 || verif!=1);
         if(choice==1){
-        Product product2 = buy_product_client();
+        Product product2 = buy_product_client(path);
       }
       else{
         printf("See you soon at Casto ! \n");
@@ -94,7 +48,6 @@ Product buy_product_client(){
       }
       return product;
   }
-
 }
 
 return product;
