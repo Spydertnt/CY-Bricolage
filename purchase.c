@@ -49,7 +49,7 @@ void purchase() {
     }
     
     do{
-      printf("Would you like to buy something else ? \n");
+      printf("Would you like to buy something  ? \n");
       printf("            1- YES \n");
       printf("            2- NO \n");
       scanf("%d", &buy);
