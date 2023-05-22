@@ -60,7 +60,7 @@ void management() {
   
   do{
     if(choice2==1){
-      increase = buy_product();
+      increase = increase_product();
       /*if(increase.found==0){
         printf("Object not found\n");
       }
