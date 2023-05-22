@@ -5,7 +5,6 @@ void purchase() {
     Stock stock;
     char client_lastname[50]={0}, client_firstname[50]={0}, id[50]={0}, file_phrase[200]={0}, path[50]={0}, check[50]={0};
     Client client;
-    FILE* clients=fopen("clients.txt", "r");
     FILE* account = NULL;
     Product product, shopping;
     
@@ -14,24 +13,29 @@ void purchase() {
     verif = scanf("%d", &a);
     vide_buffer();
     }while(a!=1 && a!=0 || verif!=1);
+    
     do{
     printf("Type your ID or create one if you don't have an account : ");
     verif = scanf("%s", id);
     vide_buffer();
     }while(verif!=1);
+    
     sprintf(path, "%s.txt", id);
-    int found=0;
-    while(fscanf(clients, "%s", check)==1){
-      if(strcmp(check,id)==0){
-        found=1;
-      break;
+    account = fopen(path, "r");
+    
+    if(account!=NULL){
+      fclose(account);
+      if(a==0){
+        printf("You have an account why would you want to create a new one ?\n");
       }
     }
-    fclose(clients);
-    if(a==0 || found==0){
+    else{
+      if(a==1){
+        printf("The id doesn't exist so why not creating an account ?\n");
+      }
       account=fopen(path, "w");
-      do{
       printf("New account\n");
+      do{
       printf("What's your last name ? : ");
       verif = scanf("%s", client_lastname);
       vide_buffer();
@@ -42,12 +46,10 @@ void purchase() {
       vide_buffer();
       }while(verif!=1);
       fprintf(account, "%s %s %d %d %d", client_firstname, client_lastname, empty, empty, empty);
-      clients=fopen("clients.txt", "a");
-      fprintf(clients, "%s ", id);
       fflush(account);
-      fclose(clients);
       fclose(account);
     }
+    
     account=fopen(path, "r+");
     fscanf(account, "%s %s %s %s %s", client.lastname, client.firstname, client.histo1, client.histo2, client.histo3);
     if(strcmp(client.histo1,"0") && strcmp(client.histo2,"0") && strcmp(client.histo3,"0")){
@@ -64,7 +66,7 @@ void purchase() {
       verif = scanf("%d", &buy);
       vide_buffer();
       if(buy==1){
-        shopping = buy_product_client();
+        shopping = buy_product_client(path);
         cart += shopping.price * shopping.purchase;
         rewrite(shopping);
         fprintf(account, "%s %s %s %s %s", client.firstname, client.lastname, shopping.name, client.histo1, client.histo2);
