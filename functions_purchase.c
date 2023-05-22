@@ -1,7 +1,9 @@
 #include "main.h"
 
+
+
 void delete_client() {
-    int position = 0, found = 0, i = 0;
+    int position = 0, found = 0, i = 0, verif;
     char check[50]={0}, id[50]={0}, path[50]={0};
     List inventory[50]={0};
     Client client;
@@ -12,9 +14,11 @@ void delete_client() {
         printf("Error while opening files.\n");
         exit(1);
     }
-
+    do{
     printf("Enter the id of the client you would like to delete: \n");
-    scanf("%s", id);
+    verif = scanf("%s", id);
+    vide_buffer();
+    }while(verif!=1);
 
     while(fscanf(clients, "%s", check)==1){
       if(strcmp(check,id)==0){
@@ -45,29 +49,42 @@ void delete_client() {
 
 Product buy_product_client(){
     int choice;
+    int verif;
     Product product = research_product();
 
     if(product.found==1){
+    	do{
         printf("How many items would you like to buy ? \n");
-        scanf("%d", &product.purchase);
+        verif = scanf("%d", &product.purchase);
+        vide_buffer();
+        }while(verif!=1);
         while(product.purchase>product.qty){
+        	do{
         	printf("The quantity in stock for this product is too low. Please choose another quantity.\n");
-        	scanf("%d", &product.purchase);
+        	verif = scanf("%d", &product.purchase);
+        	vide_buffer();
+        	}while(verif!=1);
         }
         product.qty-=product.purchase;
         return product;
     }
     else if(product.found==0){
+    	do{
         printf("Would you like to unsubscribe :( ? (1 or 2)\n");
-        scanf("%d", &choice);
+        verif = scanf("%d", &choice);
+        vide_buffer();
+        }while(choice!=2 && choice!=1 || verif!=1);
         if(choice==1){
         delete_client();
         printf("We wish to see you soon at Casto !\n");
         exit(2);
       }
       else{
+      	do{
         printf("Would you like to buy something else ? (1 or 2)\n");
-        scanf("%d", &choice);
+        verif = scanf("%d", &choice);
+        vide_buffer();
+        }while(choice!=1 && choice!=2 || verif!=1);
         if(choice==1){
         Product product2 = buy_product_client();
       }
