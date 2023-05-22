@@ -53,7 +53,7 @@ Product buy_product_client(){
         product.qty-=product.purchase;
         return product;
     }
-    /*else if(product.found==0){
+    else if(product.found==0){
         printf("Would you like to unsubscribe :( ? (1 or 2)\n");
         scanf("%d", &choice);
         if(choice==1){
@@ -74,7 +74,7 @@ Product buy_product_client(){
       return product;
   }
 
-}*/
+}
 
 return product;
 
