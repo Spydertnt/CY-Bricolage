@@ -1,7 +1,5 @@
 #include "main.h"
 
-
-
 Product increase_product(){
   Product product=research_product();
   int verif;
