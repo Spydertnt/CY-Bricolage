@@ -5,8 +5,10 @@ int main() {
 
   int mode;
   int verif;
- 
-  printf("-------Welcome to Castorama------- \n ");
+  printf("╔═════════════════════════════════════╗\n");
+  printf("║        Welcome to Castorama         ║\n");
+  printf("╚═════════════════════════════════════╝\n");
+  
   //tant que l'utilisateur n'entre pas 1 ou 2, on répète cette boucle
   do{
     printf("Which mode would you like to access ? \n");
@@ -22,7 +24,10 @@ int main() {
   else if(mode==2){
     purchase();
   }
-  printf("See you soon at Casto !\n");
+
+  printf("╔═════════════════════════════════════╗\n");
+  printf("║        SEE YOU SOON AT CASTO        ║\n");
+  printf("╚═════════════════════════════════════╝\n");
 
 return 0;
 
