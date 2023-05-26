@@ -61,24 +61,19 @@ void management() {
   }while(choice2!=1 && choice2!=2 || verif!=1);
   
   do{
-    if(choice2==1){
+    if(choice2==1){ 
       increase = increase_product();
-      /*if(increase.found==0){
-        printf("Object not found\n");
-      }
-      else*/ if(calculate_stock()+(increase.purchase*increase.size)>shop_stock){
+      if(calculate_stock()+(increase.purchase*increase.size)>shop_stock && increase.found!=0){
         printf("The total stock is insufficient \n");
       }
-      else{
+      else if(increase.found!=0){
         rewrite(increase);
       }
-      
       do{
         printf("Would you like to add another product ? (yes: 1 or no: 2) \n");
         verif = scanf("%d", &choice2);
         vide_buffer();
       }while(choice2!=1 && choice2!=2 || verif!=1);
-      
     }
   }while(choice2==1);
   fflush(file);
