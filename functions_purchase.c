@@ -27,7 +27,9 @@ Product buy_product_client(char path[]){
   //si le produit n'est pas trouvé, on demande à l'utilisateur s'il souhaite se désinscire
   else if(product.found==0){
     do{
-      printf("Would you like to unsubscribe :( ? (1 or 2)\n");
+      printf("Would you like to unsubscribe :( ? \n");
+      printf("          1- Yes.\n");
+      printf("          2- No.\n");
       verif = scanf("%d", &choice);
       vide_buffer();
     }while(choice!=2 && choice!=1 || verif!=1);
@@ -41,7 +43,9 @@ Product buy_product_client(char path[]){
     //sinon, on demande s'il souhaite acheter quelque chose d'autre
     else{
       do{
-      printf("Would you like to buy something else ? (1 or 2)\n");
+      printf("Would you like to buy something else ? \n");
+      printf("          1- Yes.\n");
+      printf("          2- No.\n);
       verif = scanf("%d", &choice);
       vide_buffer();
       }while(choice!=1 && choice!=2 || verif!=1);
