@@ -9,10 +9,12 @@ void purchase() {
     Product product, shopping;
     
     do{
-    printf("Do you already have an account? If so type 1 otherwise type 0\n");
+    printf("Do you already have an account?\n");
+    printf("          1- YES \n");
+    printf("          2- NO \n);
     verif = scanf("%d", &a);
     vide_buffer();
-    }while(a!=1 && a!=0 || verif!=1);
+    }while(a!=1 && a!=2 || verif!=1);
     
     do{
     printf("Type your ID or create one if you don't have an account : ");
@@ -24,7 +26,7 @@ void purchase() {
     account = fopen(path, "r");
     if(account!=NULL){
       fclose(account);
-      if(a==0){
+      if(a==2){
         printf("You have an account why would you want to create a new one ?\n");
       }
     }
