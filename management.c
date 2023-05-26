@@ -1,4 +1,3 @@
-
 #include "main.h"
 
 void management() {
@@ -82,5 +81,6 @@ void management() {
       
     }
   }while(choice2==1);
+  fflush(file);
   fclose(file);
 }
