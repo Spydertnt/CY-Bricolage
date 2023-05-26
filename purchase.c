@@ -6,6 +6,7 @@ void purchase() {
     char client_lastname[50]={0}, client_firstname[50]={0}, id[50]={0}, file_phrase[200]={0}, path[50]={0}, check[50]={0};
     Client client;
     FILE* account = NULL;
+    FILE* temp = NULL;
     Product product, shopping;
     
     do{
@@ -48,7 +49,7 @@ void purchase() {
       vide_buffer();
       }while(verif!=1);
       //écriture du nom et prénom du client, et de 3 0 correspondant à son historique (encore inexistant)
-      fprintf(account, "%s %s %d %d %d", client_firstname, client_lastname, empty, empty, empty);
+      fprintf(account, "%s %s %d %d %d", client_lastname, client_firstname, empty, empty, empty);
       fflush(account);
       fclose(account);
     }
@@ -66,8 +67,6 @@ void purchase() {
     }
     
     do{
-        //on remet le curseur au début du fichier account
-        rewind(account);
       printf("Would you like to buy something  ? \n");
       printf("            1- YES \n");
       printf("            2- NO \n");
@@ -79,15 +78,28 @@ void purchase() {
         cart += shopping.price * shopping.purchase;
         //on écrit dans le fichier produit la modification liée au produit acheté
         rewrite(shopping);
-        //on écrit dans le fichier account l'historique mis à jour
-        fprintf(account, "%s %s %s %s %s", client.firstname, client.lastname, shopping.name, client.histo1, client.histo2);
-        //on lit le fichier account
-        fscanf(account, "%s %s %s %s %s", client.lastname, client.firstname, client.histo1, client.histo2, client.histo3);
+        //On crée un fichier temporaire qui permettra de mettre à jour les données du client
+        temp=fopen("temp.txt", "w");
+        //on écrit dans le fichier temp l'historique mis à jour
+        fprintf(temp, "%s %s %s %s %s", client.lastname, client.firstname, shopping.name, client.histo1, client.histo2);
+        //On ferme le fichier temporaire pour enregistrer les modifications pour la console
+        fclose(temp);
+        //On réouvre en mode lecture pour récupérer les données
+        temp=fopen("temp.txt", "r");
+        //on lit le fichier temporaire
+        fscanf(temp, "%s %s %s %s %s", client.lastname, client.firstname, client.histo1, client.histo2, client.histo3);
+        printf("%s\n", client.histo1);
+        //On ferme le fichier temporaire
+        fclose(temp);
+        //on supprime l'ancien fichier du client
+        remove(path);
+        //on renomme le fichier temporaire au nom du client
+        rename("temp.txt", path);
       }
-   // on répète cette boucle tant que le client souhaite acheter quelque chose, ou si le scanf ne retourne pas 1
+   //on répète cette boucle tant que le client souhaite acheter quelque chose, ou si le scanf ne retourne pas 1
   }while(buy==1 || verif!=1);
 //on ferme le fichier
 fclose(account);
 //affichage du prix total
-printf("Your cart has a total of %d dollars, make that credit card snap!!", cart);
+printf("Your cart has a total of %d dollars, make that credit card snap!!\n", cart);
 }
