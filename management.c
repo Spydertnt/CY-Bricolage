@@ -89,7 +89,7 @@ void management() {
       }
       //on demande à l'utilisateur s'il souhaite augmenter autre chose, on répète tant qu'il n'entre pas 1 ou 2
       do{
-        printf("Would you like to add another product ? \n");
+        printf("Would you like to increase another product ? \n");
         printf("          1- YES \n");
         printf("          2- NO \n);
         verif = scanf("%d", &choice2);
