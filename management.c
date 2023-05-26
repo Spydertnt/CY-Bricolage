@@ -12,6 +12,7 @@ void management() {
   int choice1, choice2, choice3, choice4;
   char phrase[200];
   printf("Here are the available products: \n");
+  printf("\n");
   //lecture du fichier products.txt
   for(int line=0; line<nbr_products; line++){
     fgets(phrase, 199, file);
@@ -29,6 +30,7 @@ void management() {
     }
   }
   //si le compteur est à zéro, aucun produit en rupture de stock
+  printf("\n");
   if(count==0){
     printf("No product is out of stock \n");
   }
@@ -36,6 +38,7 @@ void management() {
     k=i;
   }
   Product minimum;
+  printf("\n");
   for(int j=0; j<k; j++){
     minimum.qty=3000;
     m=0;
@@ -51,6 +54,7 @@ void management() {
     i--;
   }
   //on affiche le stock restant du magasin
+  printf("\n");
   printf("The remaining stock in the shop is %d\n", shop_stock-calculate_stock());
   do{
   printf("Would you like to know a product's stock ? \n");
