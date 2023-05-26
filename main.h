@@ -23,6 +23,7 @@ typedef struct{
   int size;
   int found;
   int purchase;
+  int line;
 }Product;
 
 typedef struct{
