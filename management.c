@@ -46,15 +46,18 @@ void management() {
       }
     }
     inventory[m]=inventory[i-1];
+    //on affiche les 5 produits ayant la plus faible quantité, on décrémente i
     printf("%s has a stock of %d units\n", minimum.name, minimum.qty);
     i--;
   }
+  //on affiche le stock restant du magasin
   printf("The remaining stock in the shop is %d\n", shop_stock-calculate_stock());
   do{
   printf("Would you like to know a product's stock ? (yes: 1 or no: 2) ? \n");
   verif = scanf("%d", &choice1);
   vide_buffer();
   }while(choice1!=1 && choice1!=2 || verif!=1);
+  //on appelle la fonction research product
   if(choice1==1){
     research_product();
   }
@@ -65,14 +68,18 @@ void management() {
   }while(choice2!=1 && choice2!=2 || verif!=1);
   
   do{
+    //on appelle la fonction increase_product 
     if(choice2==1){ 
       increase = increase_product();
+      //si la quantité souhaitée du produit fait dépasser la capacité totale du magasin, on affiche un message d'erreur
       if(calculate_stock()+(increase.purchase*increase.size)>shop_stock && increase.found!=0){
         printf("The total stock is insufficient \n");
       }
+      //sinon on met à jour le fichier products.txt
       else if(increase.found!=0){
         rewrite(increase);
       }
+      //on demande à l'utilisateur s'il souhaite augmenter autre chose, on répète tant qu'il n'entre pas 1 ou 2
       do{
         printf("Would you like to add another product ? (yes: 1 or no: 2) \n");
         verif = scanf("%d", &choice2);
@@ -80,6 +87,8 @@ void management() {
       }while(choice2!=1 && choice2!=2 || verif!=1);
     }
   }while(choice2==1);
+  //on vide le tampon associé à file
   fflush(file);
+  //on ferme le fichier
   fclose(file);
 }
