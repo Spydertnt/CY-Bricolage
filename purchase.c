@@ -36,6 +36,7 @@ void purchase() {
       account=fopen(path, "w");
       printf("New account\n");
       do{
+          rewind(account);
       printf("What's your last name ? : ");
       verif = scanf("%s", client_lastname);
       vide_buffer();
