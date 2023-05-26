@@ -7,6 +7,7 @@ int main() {
   int verif;
  
   printf("-------Welcome to Castorama------- \n ");
+  //tant que l'utilisateur n'entre pas 1 ou 2, on répète cette boucle
   do{
     printf("Which mode would you like to access ? \n");
     printf("\n  1- Management mode");
