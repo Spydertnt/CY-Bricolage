@@ -33,6 +33,7 @@ Product research_product(){
       vide_buffer();
       }while(verif!=1);
           while(fscanf(file, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size)==5){
+            product.line++;
             if(ref==product.ref){
               product.found = 1;
               break;
@@ -45,6 +46,7 @@ Product research_product(){
       vide_buffer();
       }while(verif!=1);
           while(fscanf(file, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size)==5){
+            product.line++;
             if(strcmp(product.name,name)==0){
               product.found = 1;
               break;
@@ -105,7 +107,6 @@ void rewrite(Product increase){
   }
   if(increase.line!=1){
     fprintf(file, "\n");
-    fprintf(temp, "\n");
   }
   fprintf(temp, "%s %d %d %d %d\n", increase.name, increase.ref, increase.qty, increase.price, increase.size);
   fgets(line, 199, file);
