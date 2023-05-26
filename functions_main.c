@@ -26,7 +26,9 @@ Product research_product(){
   verif  = scanf("%d" , &rech);
   vide_buffer();
   }while(verif!=1 || rech!=1 && rech!=2);
+//on remet le curseur au début dans le fichier produit 
   rewind(file);
+//switch case en fonction de la réponse de l'utilisateur
     switch(rech){
       case 1:do{
       printf("       Enter product's ref:");
