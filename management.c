@@ -53,7 +53,9 @@ void management() {
   //on affiche le stock restant du magasin
   printf("The remaining stock in the shop is %d\n", shop_stock-calculate_stock());
   do{
-  printf("Would you like to know a product's stock ? (yes: 1 or no: 2) ? \n");
+  printf("Would you like to know a product's stock ? \n");
+  printf("          1- YES \n");
+  printf("          2- NO \n);
   verif = scanf("%d", &choice1);
   vide_buffer();
   }while(choice1!=1 && choice1!=2 || verif!=1);
@@ -62,7 +64,9 @@ void management() {
     research_product();
   }
   do{
-    printf("Would you like to increase the quantity of a product ? (yes: 1 or no: 2) \n");
+    printf("Would you like to increase the quantity of a product ? \n");
+    printf("          1- YES \n");
+    printf("          2- NO \n);
     verif = scanf("%d", &choice2);
     vide_buffer();
   }while(choice2!=1 && choice2!=2 || verif!=1);
@@ -81,7 +85,9 @@ void management() {
       }
       //on demande à l'utilisateur s'il souhaite augmenter autre chose, on répète tant qu'il n'entre pas 1 ou 2
       do{
-        printf("Would you like to add another product ? (yes: 1 or no: 2) \n");
+        printf("Would you like to add another product ? \n");
+        printf("          1- YES \n");
+        printf("          2- NO \n);
         verif = scanf("%d", &choice2);
         vide_buffer();
       }while(choice2!=1 && choice2!=2 || verif!=1);
