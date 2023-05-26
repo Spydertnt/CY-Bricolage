@@ -11,7 +11,7 @@ void purchase() {
     do{
     printf("Do you already have an account?\n");
     printf("          1- YES \n");
-    printf("          2- NO \n);
+    printf("          2- NO \n");
     verif = scanf("%d", &a);
     vide_buffer();
     }while(a!=1 && a!=2 || verif!=1);
