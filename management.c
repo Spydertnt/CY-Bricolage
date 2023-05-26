@@ -4,6 +4,7 @@ void management() {
   Product product = {0};
   char purchase_name[20];
   int count=0, i=0, k=5, l=0, m=0, verif;
+  //déclaration d'un tableau de produits, et d'un tableau de produits ayant une quantité nulle
   Product inventory[nbr_products]={0}, inventory2[nbr_products]={0};
   Product increase;
   FILE* file = NULL;
@@ -11,26 +12,29 @@ void management() {
   int choice1, choice2, choice3, choice4;
   char phrase[200];
   printf("Here are the available products: \n");
+  //lecture du fichier products.txt
   for(int line=0; line<nbr_products; line++){
     fgets(phrase, 199, file);
     sscanf(phrase, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size);
+    //si un produit a une quantité nulle, on affiche le produit en question et on incrémente le compteur
     if(product.qty==0){
       printf("%s is out of stock \n", product.name);
       count++;
     }
+    //sinon, on affiche la liste des articles du magasin, et on remplie le tableau de produits ayant une quantité non nulle
     if(product.qty!=0){
       printf("%s\n", product.name);
       inventory[i]=product;
       i++;
     }
   }
-
+  //si le compteur est à zéro, aucun produit en rupture de stock
   if(count==0){
     printf("No product is out of stock \n");
-    }
+  }
   if(i<5){
     k=i;
-    }
+  }
   Product minimum;
   for(int j=0; j<k; j++){
     minimum.qty=3000;
