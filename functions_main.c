@@ -94,23 +94,27 @@ void rewrite(Product increase){
   Product product, inventory[nbr_products];
   FILE* file = NULL;
   file = fopen("products.txt","r+");
+  FILE* temp = NULL;
+  temp = fopen("temp.txt","w+");
   char line[200];
-  for(int i=1; i<increase.ref; i++){
+  for(int i=1; i<increase.line; i++){
     fscanf(file, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size);
+    fprintf(temp, "%s %d %d %d %d\n", product.name, product.ref, product.qty, product.price, product.size);
+    fflush(temp);
+    
   }
-  if(increase.ref!=1){
+  if(increase.line!=1){
     fprintf(file, "\n");
+    fprintf(temp, "\n");
   }
-  position=ftell(file);
+  fprintf(temp, "%s %d %d %d %d\n", increase.name, increase.ref, increase.qty, increase.price, increase.size);
   fgets(line, 199, file);
-  for(int i=increase.ref; i<nbr_products; i++){
-    fscanf(file, "%s %d %d %d %d", inventory[i-increase.ref].name, &inventory[i-increase.ref].ref, &inventory[i-increase.ref].qty, &inventory[i-increase.ref].price, &inventory[i-increase.ref].size);
+  for(int i=increase.line; i<nbr_products; i++){
+    fscanf(file, "%s %d %d %d %d", product.name, &product.ref, &product.qty, &product.price, &product.size);
+    fprintf(temp, "%s %d %d %d %d\n", product.name, product.ref, product.qty, product.price, product.size);
+    fflush(temp);
   }
-  fseek(file, position, 0);
-  for(int i=increase.ref; i<nbr_products; i++){
-    fprintf(file, "%s %d %d %d %d\n", inventory[i-increase.ref].name, inventory[i-increase.ref].ref-1, inventory[i-increase.ref].qty, inventory[i-increase.ref].price, inventory[i-increase.ref].size);
-  }
-  fprintf(file, "%s %d %d %d %d", increase.name, nbr_products, increase.qty, increase.price, increase.size);
-  fclose(file);
+  remove("products.txt");
+  rename("temp.txt", "products.txt");
   printf("The remaining stock is : %d\n", shop_stock-calculate_stock());
 }
