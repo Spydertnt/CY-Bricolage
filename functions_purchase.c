@@ -45,7 +45,7 @@ Product buy_product_client(char path[]){
       do{
       printf("Would you like to buy something else ? \n");
       printf("          1- Yes.\n");
-      printf("          2- No.\n);
+      printf("          2- No.\n");
       verif = scanf("%d", &choice);
       vide_buffer();
       }while(choice!=1 && choice!=2 || verif!=1);
