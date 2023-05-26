@@ -21,7 +21,7 @@ Product research_product(){
   do{
   printf("\n       1- Search by ref:");
   printf("\n       2- Search by name: ");
-  printf("\n       Next: ");
+  printf("\n       3- Next: ");
   printf("\n       choice: ");
   verif  = scanf("%d" , &rech);
   vide_buffer();
@@ -61,7 +61,7 @@ Product research_product(){
           }
         }
         break;
-      default:
+      case 3:
         fclose(file);
         return product2;
     }
