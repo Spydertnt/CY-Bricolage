@@ -1,7 +1,7 @@
 #include "main.h"
 
 void purchase() {
-    //Déclaration et initialisation des variables à 0
+    //Déclaration et initialisation des variables
     int a=-1, buy=0, choice = 0, purchase = 0, cart = 0, empty = 0, verif = 0;
     Stock stock;
     char client_lastname[50]={0}, client_firstname[50]={0}, id[50]={0}, file_phrase[200]={0}, path[50]={0}, check[50]={0};
