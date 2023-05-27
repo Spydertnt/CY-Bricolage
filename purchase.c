@@ -1,7 +1,7 @@
 #include "main.h"
 
 void purchase() {
-    //Déclaration et initialisation des variables
+    //Initialisation des variables et mise à 0
     int a=-1, buy=0, choice = 0, purchase = 0, cart = 0, empty = 0, verif = 0;
     Stock stock;
     char client_lastname[50]={0}, client_firstname[50]={0}, id[50]={0}, file_phrase[200]={0}, path[50]={0}, check[50]={0};
@@ -56,30 +56,38 @@ void purchase() {
       verif = scanf("%s", client_firstname);
       vide_buffer();
       }while(verif!=1);
-      //écriture du nom et prénom du client, et de 3 0 correspondant à son historique (encore inexistant)
+      //Écriture du nom et prénom du client, et de 3 0 correspondant à son historique (encore inexistant)
       fprintf(account, "%s %s %d %d %d", client_lastname, client_firstname, empty, empty, empty);
       fflush(account);
       fclose(account);
     }
   
-    //ouverture du fichier account en mode lecture écriture
+    //Ouverture du fichier account en mode lecture écriture
     account=fopen(path, "r+");
   
-    //lecture du fichier account
+    //Lecture du fichier account
     fscanf(account, "%s %s %s %s %s", client.lastname, client.firstname, client.histo1, client.histo2, client.histo3);
   
-    //si on trouve 3 produits en historique, on les affiche
+    //Si on trouve 3 produits en historique, on les affichent
     if(strcmp(client.histo1,"0") && strcmp(client.histo2,"0") && strcmp(client.histo3,"0")){
         printf("History of the last 3 purchases: %s %s %s\n", client.histo1, client.histo2, client.histo3);
     }
-    //sinon on affiche :
+    //Si on trouve 2 produits en historique, on les affichent
+    else if(strcmp(client.histo1,"0") && strcmp(client.histo2,"0")){
+        printf("History of the last 2 purchases: %s %s\n", client.histo1, client.histo2);
+    }
+    //Si on trouve 1 produit en historique, on l'affiche
+    else if(strcmp(client.histo1,"0")){
+        printf("History of the last purchase: %s\n", client.histo1);
+    }
+    //Sinon on affiche :
     else{
-        printf("No history, or minus 3 purchases \n");
+        printf("No history\n");
     }
 
     //Boucle permettant à l'utilisateur d'acheter un ou plusieurs objets d'une ou de plusieurs références
     do{
-      printf("Would you like to buy something  ? \n");
+      printf("Would you like to buy something ? \n");
       printf("            1- YES \n");
       printf("            2- NO \n");
       verif = scanf("%d", &buy);
@@ -100,7 +108,6 @@ void purchase() {
         temp=fopen("temp.txt", "r");
         //on lit le fichier temporaire
         fscanf(temp, "%s %s %s %s %s", client.lastname, client.firstname, client.histo1, client.histo2, client.histo3);
-        printf("%s\n", client.histo1);
         //On ferme le fichier temporaire
         fclose(temp);
         //on supprime l'ancien fichier du client
