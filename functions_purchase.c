@@ -10,7 +10,7 @@ Product buy_product_client(char path[]){
   Product product = research_product();
   
   //Si le produit est bien trouvé, on demande à l'utilisateur combien il en veut
-  if(product.found==1){
+  if(product.found==1 && product.qty!=0){
     do{
       printf("How many items would you like to buy ? \n");
       verif = scanf("%d", &product.purchase);
@@ -31,7 +31,7 @@ Product buy_product_client(char path[]){
     return product;
   }
   //Si le produit n'est plus disponible ou si il est introuvable, on demande à l'utilisateur s'il souhaite se désinscire
-  else if(product.qty==0 || product.found==0){
+  else{
     do{
       printf("Would you like to unsubscribe :( ? \n");
       printf("          1- Yes.\n");
