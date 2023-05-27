@@ -21,6 +21,6 @@ Pour choisir à quel mode accéder il suffit de taper 1 ou 2.
 Une fois le compte créé, vous aurez la possibilité d'acheter les produits en stock(chercher le produit par son nom ou sa référence), tout en précisant la quantité souhaitée (par produit). Bien sur il faut que la quantité souhaitée soit disponible en magasin. Des que vous vous connectez, vous apercevrez votre historique des 3 derniers achats, si vous avez déjà acheté au moins 3 articles. 
 
 
-Si en tant que client vous n'êtes pas satisfait car l'article que vous souhaitez acheter n'existe pas, vous avez le droit de vous désinscrire }
+Si en tant que client vous n'êtes pas satisfait car l'article que vous souhaitez acheter n'est plus disponible, vous avez le droit de vous désinscrire }
 
 Dans notre programme, si vous tapez 1 au clavier cela correspond à un oui, si vous tapez 2 au clavier cela correspond à un non. 
