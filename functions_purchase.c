@@ -26,7 +26,7 @@ Product buy_product_client(char path[]){
       }while(verif!=1);
     }
     
-    //On décrémente la quantité du produit souhaité de la quantité souhaitée du produit
+    //On décrémente la quantité du produit souhaité de la quantité en stock du produit
     product.qty-=product.purchase;
     return product;
   }
