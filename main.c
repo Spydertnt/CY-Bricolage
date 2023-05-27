@@ -3,8 +3,9 @@
 
 int main() {
 
-  int mode;
-  int verif;
+  //Déclaration et initialisation des variables à 0
+  int mode = 0;
+  int verif = 0;
 
   //Affichage du message de bienvenue
   printf("╔═════════════════════════════════════╗\n");
