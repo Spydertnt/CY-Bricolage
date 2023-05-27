@@ -5,11 +5,13 @@ int main() {
 
   int mode;
   int verif;
+
+  //Affichage du message de bienvenue
   printf("╔═════════════════════════════════════╗\n");
   printf("║        Welcome to Castorama         ║\n");
   printf("╚═════════════════════════════════════╝\n");
   
-  //tant que l'utilisateur n'entre pas 1 ou 2, on répète cette boucle
+  //Choix du mode souhaité et tant que l'utilisateur n'entre pas 1 ou 2, on répète cette boucle
   do{
     printf("Which mode would you like to access ? \n");
     printf("\n  1- Management mode");
@@ -18,6 +20,7 @@ int main() {
     vide_buffer();
   }while(mode!=1 && mode!=2 || verif!=1);
 
+  //Lancement du mode choisie précédemment
   if(mode==1){
     management();
     }
@@ -25,6 +28,7 @@ int main() {
     purchase();
   }
 
+  //Affichage du message de départ
   printf("╔═════════════════════════════════════╗\n");
   printf("║        SEE YOU SOON AT CASTO        ║\n");
   printf("╚═════════════════════════════════════╝\n");
