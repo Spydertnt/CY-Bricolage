@@ -70,5 +70,7 @@ Product buy_product_client(char path[]){
       return product;
     }
   }
+  
   return product;
+  
 }
