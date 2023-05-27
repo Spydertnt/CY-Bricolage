@@ -5,7 +5,9 @@
 #define nbr_products 10
 #define nbr_line_stock 1
 #define shop_stock 1000
+//Déclaration des bibliothèdes ainsi que des constantes liés aux nombres de produits, à la capacité du magasin etc ...
 
+//Déclaration des structures utilisés dans le programme
 typedef struct{
   char lastname[50];
   char firstname[50];
@@ -31,6 +33,7 @@ typedef struct{
   int remaining_stock;
 }Stock;
 
+//Déclaration des fonctions du programme (prototypes des fonctions)
 void vide_buffer();
 void delete_client();
 Product research_product();
