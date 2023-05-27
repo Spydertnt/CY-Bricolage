@@ -24,8 +24,8 @@ Product buy_product_client(char path[]){
     product.qty-=product.purchase;
     return product;
   }
-  //si le produit n'est pas trouvé, on demande à l'utilisateur s'il souhaite se désinscire
-  else if(product.found==0){
+  //si le produit n'est plus disponible, on demande à l'utilisateur s'il souhaite se désinscire
+  else if(product.qty==0){
     do{
       printf("Would you like to unsubscribe :( ? \n");
       printf("          1- Yes.\n");
